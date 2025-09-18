@@ -1,7 +1,4 @@
 class BookingService{
-    getBooking(id){
-        return cy.request(`https://restful-booker.herokuapp.com/booking/${id}`)
-    }
 
     loginAPI(username,password){
         return cy.request({
@@ -26,6 +23,23 @@ class BookingService{
                 'Accept': 'application/json'
             },
             body: booking
+        })
+    }
+
+    getBooking(id){
+        return cy.request(`https://restful-booker.herokuapp.com/booking/${id}`)
+    }
+
+    updateBooking(id,bookingUpdated){
+        return cy.request({
+            method: 'PUT',
+            url: `https://restful-booker.herokuapp.com/booking/${id}`,
+            headers:{
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Cookie' : 'token = 3bd9ec0c5fcf9ae' 
+            },
+            body: bookingUpdated
         })
     }
 

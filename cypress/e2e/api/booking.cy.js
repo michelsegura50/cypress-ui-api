@@ -13,6 +13,7 @@ describe('Restful-booker E2E', function(){
         bookingService.loginAPI(user.username,user.password).then((resp)=>{
             expect(resp.status).to.eq(200)
             Cypress.env('token',resp.body.token)
+            cy.log(resp.body.token)
         })
     })
     
@@ -26,4 +27,14 @@ describe('Restful-booker E2E', function(){
             expect(resp.body.booking.firstname).to.exist
         })
     })
+
+    it('getBooking', function(){
+        bookingService.getBooking(412).then((resp)=>{
+            expect(resp.status).to.eq(200)
+            expect(resp.body.firstname).to.exist
+            expect(resp.body.firstname).to.eq('Jim')
+        })
+    })
+
+    
 })
