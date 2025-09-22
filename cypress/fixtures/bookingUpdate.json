@@ -1,8 +1,8 @@
 {
- "bookingUpdate" : 
+ "update" : 
   {
-    "firstname" : "Jim",
-    "lastname" : "Brown",
+    "firstname" : "Jimson",
+    "lastname" : "Darsil",
     "totalprice" : 111,
     "depositpaid" : true,
     "bookingdates" : {

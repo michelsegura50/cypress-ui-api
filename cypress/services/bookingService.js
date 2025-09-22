@@ -37,7 +37,7 @@ class BookingService{
             headers:{
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Cookie' : 'token = 3bd9ec0c5fcf9ae' 
+                'Cookie' : `token=${Cypress.env('token')}` 
             },
             body: bookingUpdated
         })

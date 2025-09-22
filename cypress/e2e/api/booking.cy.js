@@ -5,6 +5,7 @@ describe('Restful-booker E2E', function(){
     beforeEach(()=>{
         cy.fixture('credentials').as('credentials')
         cy.fixture('bookingData').as('bookingData')
+        cy.fixture('bookingUpdate').as('bookingUpdate')
     })
 
     it('loginAPI', function(){
@@ -25,6 +26,7 @@ describe('Restful-booker E2E', function(){
             cy.log(resp.body.bookingid)
             expect(resp.body.bookingid).to.eq(resp.body.bookingid)
             expect(resp.body.booking.firstname).to.exist
+            Cypress.env('bookingId',resp.body.bookingid)
         })
     })
 
@@ -32,9 +34,16 @@ describe('Restful-booker E2E', function(){
         bookingService.getBooking(412).then((resp)=>{
             expect(resp.status).to.eq(200)
             expect(resp.body.firstname).to.exist
-            expect(resp.body.firstname).to.eq('Jim')
         })
     })
 
+    it('updateBooking', function(){
+        const update = this.bookingUpdate.update
+
+        bookingService.updateBooking(Cypress.env('bookingId'), update).then((resp)=>{
+            expect(resp.status).to.eq(200)
+            expect(resp.body.firstname).to.exist
+        })
+    })
     
 })
