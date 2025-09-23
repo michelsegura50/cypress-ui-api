@@ -43,6 +43,17 @@ class BookingService{
         })
     }
 
+    deleteBooking(id){
+        return cy.request({
+            method: 'DELETE',
+            url: `https://restful-booker.herokuapp.com/booking/${id}`,
+            headers:{
+                'Content-Type': 'application/json',
+                'Cookie' : `token=${Cypress.env('token')}` 
+            }
+        })
+    }
+
 }
 
 export default new BookingService()

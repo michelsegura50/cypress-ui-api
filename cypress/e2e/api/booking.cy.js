@@ -24,14 +24,15 @@ describe('Restful-booker E2E', function(){
         bookingService.createBooking(booking).then((resp)=>{
             expect(resp.status).to.eq(200)
             cy.log(resp.body.bookingid)
-            expect(resp.body.bookingid).to.eq(resp.body.bookingid)
-            expect(resp.body.booking.firstname).to.exist
+            expect(resp.body.bookingid).to.be.a('number')
+            expect(resp.body.booking.firstname).to.eq(booking.firstname)
+
             Cypress.env('bookingId',resp.body.bookingid)
         })
     })
 
     it('getBooking', function(){
-        bookingService.getBooking(412).then((resp)=>{
+        bookingService.getBooking(Cypress.env('bookingId')).then((resp)=>{
             expect(resp.status).to.eq(200)
             expect(resp.body.firstname).to.exist
         })
@@ -45,5 +46,15 @@ describe('Restful-booker E2E', function(){
             expect(resp.body.firstname).to.exist
         })
     })
+
+    it('deleteBooking', function(){
+
+        bookingService.deleteBooking(Cypress.env('bookingId')).then((resp)=>{
+            cy.log(Cypress.env('bookingId'))
+            expect(resp.status).to.eq(201)  
+        })
+    })
+
+
     
 })
