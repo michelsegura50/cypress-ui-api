@@ -36,4 +36,18 @@ describe('Pruebas hibridas de parabank', function(){
             Cypress.env('newAccountId',resp.body) //Guardamos el id de la nueva cuenta
         })
     })
+
+    it('Detalle de cuenta', function(){
+        const Cuentas = Cypress.env('accounts') //Cuentas guardadas del cliente
+        const accountId = Cuentas[6].id //Detalle de la cuenta n
+        const tipoCuenta = ['SAVINGS', 'CHECKING'] //Tipos de cuenta
+
+        ParabankService.getAccountDetail(accountId).then((resp)=>{
+            expect(resp.status).to.eq(200)
+            cy.log(JSON.stringify(resp.body))
+            expect(resp.body.type).to.eq(tipoCuenta[0])
+
+        })
+    })
+
 })
