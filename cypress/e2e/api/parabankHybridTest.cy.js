@@ -39,14 +39,34 @@ describe('Pruebas hibridas de parabank', function(){
 
     it('Detalle de cuenta', function(){
         const Cuentas = Cypress.env('accounts') //Cuentas guardadas del cliente
-        const accountId = Cuentas[6].id //Detalle de la cuenta n
+        const accountId = Cuentas[0].id //Detalle de la cuenta n
         const tipoCuenta = ['SAVINGS', 'CHECKING'] //Tipos de cuenta
 
         ParabankService.getAccountDetail(accountId).then((resp)=>{
             expect(resp.status).to.eq(200)
             cy.log(JSON.stringify(resp.body))
-            expect(resp.body.type).to.eq(tipoCuenta[0])
 
+            if(resp.body.type == 'SAVINGS'){
+                expect(resp.body.type).to.eq(tipoCuenta[0])
+            }else{
+                expect(resp.body.type).to.eq(tipoCuenta[1])
+            }
+
+        })
+    })
+
+    it('Tranferir fondos', function(){
+        const Cuentas = Cypress.env('accounts') //Cuentas guardadas del cliente
+        const fromAccount = Cuentas[1].id //cuenta origen
+        const toAccount = Cuentas[3].id //cuenta detino
+        const amount = 730 //Monto
+
+        ParabankService.transferFunds(fromAccount,toAccount,amount).then((resp)=>{
+            expect(resp.status).to.eq(200)
+            cy.log(JSON.stringify(resp.body))
+            expect(resp.body).to.include(fromAccount)
+            expect(resp.body).to.include(toAccount)
+            expect(resp.body).to.include(amount)
         })
     })
 

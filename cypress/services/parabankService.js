@@ -40,7 +40,12 @@ class ParabankService {
     }
 
     transferFunds(fromAccountId, toAccountId, amount){
-
+        return cy.request({
+            method : 'POST',
+            url : `${this.base}/transfer`,
+            qs: {fromAccountId,toAccountId,amount},
+            headers: { 'Accept': 'application/json'}
+        })
     }
 } 
 
