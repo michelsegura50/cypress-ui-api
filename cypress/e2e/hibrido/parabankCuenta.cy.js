@@ -1,4 +1,5 @@
 import ParabankService from "../../services/parabankService"
+import AccountsPage  from "../../pages/AccountsPage"
 
 describe('Flujo hibrido: Crear cuenta API y validar en UI',function(){
     
@@ -9,6 +10,7 @@ describe('Flujo hibrido: Crear cuenta API y validar en UI',function(){
     it('Crear cuenta y validar',function(){
         const user = this.credentials.usuarioParabank
         
+        //Crear cuenta desde API
         ParabankService.loginAPI(user.username,user.password).then((resp)=>{
         expect(resp.status).to.eq(200)
         cy.log(JSON.stringify(resp.body))
@@ -29,6 +31,9 @@ describe('Flujo hibrido: Crear cuenta API y validar en UI',function(){
             })
         })
 
-        
+        AccountsPage.visitPage() //Visitar el UI
+        AccountsPage.typeUsername(user.username)
+        AccountsPage.typePassword(user.password)
+        AccountsPage.loginBtn()
     })
 })
