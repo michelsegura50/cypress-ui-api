@@ -14,6 +14,18 @@ class AccountsPage {
     loginBtn(){
         cy.get('input[type="submit"][value = "Log In"]').click()
     }
+
+    validarPagina(){
+        cy.get('.title').should('contain','Accounts Overview')
+        //URL
+        cy.url().should('include','https://parabank.parasoft.com/parabank/overview.htm')
+    }
+
+    tableAccounts(newAccount){
+        cy.get('tr').each(($row, index) => {
+            cy.get('td').should('include', newAccount)
+        })
+    }
 }
 
 export default new AccountsPage()
