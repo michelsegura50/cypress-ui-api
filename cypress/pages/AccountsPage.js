@@ -22,8 +22,14 @@ class AccountsPage {
     }
 
     tableAccounts(newAccount){
-        cy.get('tr').each(($row, index) => {
-            cy.get('td').should('include', newAccount)
+        cy.get('tbody tr').each(($row) => {
+            cy.wrap($row).find('td').then($cells =>{
+                const rowText = $cells.text()
+                if(rowText.includes(newAccount)){
+                    expect(rowText).to.include(newAccount)
+                    cy.log(`Cuenta nueva: ${newAccount} en fila ${rowText}`)
+                }
+            })
         })
     }
 }

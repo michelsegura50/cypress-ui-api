@@ -32,13 +32,13 @@ describe('Flujo hibrido: Crear cuenta API y validar en UI',function(){
             })
         })
 
-        const cuentaNueva = Cypress.env('newAccountId')
+        const newAccount = Cypress.env('newAccountId')
         //Visitar el UI y confirmar pagina
         AccountsPage.visitPage() 
         AccountsPage.typeUsername(user.username)
         AccountsPage.typePassword(user.password)
         AccountsPage.loginBtn()
         AccountsPage.validarPagina()        
-        AccountsPage.tableAccounts(cuentaNueva)
+        AccountsPage.tableAccounts(newAccount)
     })
 })
