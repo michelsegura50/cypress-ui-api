@@ -1,0 +1,109 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 1,
+    "passes": 0,
+    "pending": 0,
+    "failures": 1,
+    "start": "2025-10-14T16:21:23.118Z",
+    "end": "2025-10-14T16:21:33.750Z",
+    "duration": 10632,
+    "testsRegistered": 1,
+    "passPercent": 0,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "ad09b365-2a19-49a3-8f15-02546b60fe79",
+      "title": "",
+      "fullFile": "cypress\\e2e\\hibrido\\parabankCuenta.cy.js",
+      "file": "cypress\\e2e\\hibrido\\parabankCuenta.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "267bb35a-fe5e-4b07-8f19-34eeeb5ed428",
+          "title": "Flujo hibrido: Crear cuenta API y validar en UI",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Crear cuenta y validar",
+              "fullTitle": "Flujo hibrido: Crear cuenta API y validar en UI Crear cuenta y validar",
+              "timedOut": null,
+              "duration": 6105,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "const user = this.credentials.usuarioParabank;\n//Crear cuenta desde API\n_parabankService.default.loginAPI(user.username, user.password).then(resp => {\n  expect(resp.status).to.eq(200);\n  cy.log(JSON.stringify(resp.body));\n  Cypress.env('customerId', resp.body.id); //Guardamos el id del cleinte ingresado\n  _parabankService.default.getAccounts(Cypress.env('customerId')).then(resp => {\n    expect(resp.status).to.eq(200);\n    cy.log(JSON.stringify(resp.body));\n    Cypress.env('accounts', resp.body); //Guardamos las cuentas del cliente\n    const tipoCuenta = [0, 1]; //0 = Savings 1 = Checking\n    const Cuentas = Cypress.env('accounts'); //Cuentas guardadas del cliente\n    const fromAccountId = Cuentas[0].id; //Usamos la cuenta origen del cliente\n    _parabankService.default.createAccount(Cypress.env('customerId'), fromAccountId, tipoCuenta[1]).then(resp => {\n      expect(resp.status).to.eq(200);\n      cy.log(JSON.stringify(resp.body));\n      Cypress.env('newAccountId', resp.body); //Guardamos el id de la nueva cuenta\n    });\n  });\n});\nconst newAccount = Cypress.env('newAccountId');\n//Visitar el UI y confirmar pagina\n_AccountsPage.default.visitPage();\n_AccountsPage.default.typeUsername(user.username);\n_AccountsPage.default.typePassword(user.password);\n_AccountsPage.default.loginBtn();\n_AccountsPage.default.validarPagina();\n_AccountsPage.default.tableAccounts(newAccount);",
+              "err": {
+                "message": "AssertionError: Timed out retrying after 4000ms: expected '<h1.title>' to contain 'Accounts Overview'",
+                "estack": "AssertionError: Timed out retrying after 4000ms: expected '<h1.title>' to contain 'Accounts Overview'\n    at AccountsPage.validarPagina (webpack://cypress-ui-api/./cypress/pages/AccountsPage.js:19:25)\n    at Context.eval (webpack://cypress-ui-api/./cypress/e2e/hibrido/parabankCuenta.cy.js:41:21)",
+                "diff": null
+              },
+              "uuid": "9d3dfbce-6392-457c-84cf-e69dd4b0488a",
+              "parentUUID": "267bb35a-fe5e-4b07-8f19-34eeeb5ed428",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [],
+          "failures": [
+            "9d3dfbce-6392-457c-84cf-e69dd4b0488a"
+          ],
+          "pending": [],
+          "skipped": [],
+          "duration": 6105,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.4"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/reports",
+        "overwrite": false,
+        "html": false,
+        "json": true
+      },
+      "version": "6.3.0"
+    }
+  }
+}
