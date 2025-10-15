@@ -1,0 +1,412 @@
+{
+  "stats": {
+    "suites": 4,
+    "tests": 11,
+    "passes": 11,
+    "pending": 0,
+    "failures": 0,
+    "testsRegistered": 11,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false,
+    "start": "2025-10-15T16:43:55.669Z",
+    "end": "2025-10-15T16:44:13.371Z",
+    "duration": 17702
+  },
+  "results": [
+    {
+      "uuid": "6c9c257f-49b7-4e53-aeee-307d3f30271c",
+      "title": "",
+      "fullFile": "cypress\\e2e\\api\\parabankHybridTest.cy.js",
+      "file": "cypress\\e2e\\api\\parabankHybridTest.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "d46a9665-d597-4f81-8856-9ab79ee3d28c",
+          "title": "Pruebas hibridas de parabank",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "loginAPI",
+              "fullTitle": "Pruebas hibridas de parabank loginAPI",
+              "timedOut": null,
+              "duration": 1487,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const user = this.credentials.usuarioParabank;\n_parabankService.default.loginAPI(user.username, user.password).then(resp => {\n  expect(resp.status).to.eq(200);\n  cy.log(JSON.stringify(resp.body));\n  Cypress.env('customerId', resp.body.id); //Guardamos el id del cleinte ingresado\n});",
+              "err": {},
+              "uuid": "35c59756-fbd7-4d3a-9814-4e429e52ac97",
+              "parentUUID": "d46a9665-d597-4f81-8856-9ab79ee3d28c",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Cuentas cliente",
+              "fullTitle": "Pruebas hibridas de parabank Cuentas cliente",
+              "timedOut": null,
+              "duration": 126,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "_parabankService.default.getAccounts(Cypress.env('customerId')).then(resp => {\n  expect(resp.status).to.eq(200);\n  cy.log(JSON.stringify(resp.body));\n  Cypress.env('accounts', resp.body); //Guardamos las cuentas del cliente\n});",
+              "err": {},
+              "uuid": "c19329b7-5d79-4a6d-aba5-36650ede5ca7",
+              "parentUUID": "d46a9665-d597-4f81-8856-9ab79ee3d28c",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Crear nueva cuenta",
+              "fullTitle": "Pruebas hibridas de parabank Crear nueva cuenta",
+              "timedOut": null,
+              "duration": 128,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const tipoCuenta = [0, 1]; //0 = Savings 1 = Checking\nconst Cuentas = Cypress.env('accounts'); //Cuentas guardadas del cliente\nconst fromAccountId = Cuentas[0].id; //Usamos la cuenta origen del cliente\n_parabankService.default.createAccount(Cypress.env('customerId'), fromAccountId, tipoCuenta[1]).then(resp => {\n  expect(resp.status).to.eq(200);\n  cy.log(JSON.stringify(resp.body));\n  Cypress.env('newAccountId', resp.body); //Guardamos el id de la nueva cuenta\n});",
+              "err": {},
+              "uuid": "033b9bd6-750f-421b-8d93-1c126bcc8113",
+              "parentUUID": "d46a9665-d597-4f81-8856-9ab79ee3d28c",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Detalle de cuenta",
+              "fullTitle": "Pruebas hibridas de parabank Detalle de cuenta",
+              "timedOut": null,
+              "duration": 129,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const Cuentas = Cypress.env('accounts'); //Cuentas guardadas del cliente\nconst accountId = Cuentas[0].id; //Detalle de la cuenta n\nconst tipoCuenta = ['SAVINGS', 'CHECKING']; //Tipos de cuenta\n_parabankService.default.getAccountDetail(accountId).then(resp => {\n  expect(resp.status).to.eq(200);\n  cy.log(JSON.stringify(resp.body));\n  if (resp.body.type == 'SAVINGS') {\n    expect(resp.body.type).to.eq(tipoCuenta[0]);\n  } else {\n    expect(resp.body.type).to.eq(tipoCuenta[1]);\n  }\n});",
+              "err": {},
+              "uuid": "6b840528-2610-4233-8b53-497ee349397a",
+              "parentUUID": "d46a9665-d597-4f81-8856-9ab79ee3d28c",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Tranferir fondos",
+              "fullTitle": "Pruebas hibridas de parabank Tranferir fondos",
+              "timedOut": null,
+              "duration": 137,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const Cuentas = Cypress.env('accounts'); //Cuentas guardadas del cliente\nconst fromAccount = Cuentas[1].id; //cuenta origen\nconst toAccount = Cuentas[3].id; //cuenta detino\nconst amount = 730; //Monto\n_parabankService.default.transferFunds(fromAccount, toAccount, amount).then(resp => {\n  expect(resp.status).to.eq(200);\n  cy.log(JSON.stringify(resp.body));\n  expect(resp.body).to.include(fromAccount);\n  expect(resp.body).to.include(toAccount);\n  expect(resp.body).to.include(amount);\n});",
+              "err": {},
+              "uuid": "a84c9d71-502b-491f-ac18-e69428776979",
+              "parentUUID": "d46a9665-d597-4f81-8856-9ab79ee3d28c",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "35c59756-fbd7-4d3a-9814-4e429e52ac97",
+            "c19329b7-5d79-4a6d-aba5-36650ede5ca7",
+            "033b9bd6-750f-421b-8d93-1c126bcc8113",
+            "6b840528-2610-4233-8b53-497ee349397a",
+            "a84c9d71-502b-491f-ac18-e69428776979"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 2007,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    },
+    {
+      "uuid": "5a41f58a-0f75-48ed-b75f-b2b23bcd97a2",
+      "title": "",
+      "fullFile": "cypress\\e2e\\ui\\loginPage.cy.js",
+      "file": "cypress\\e2e\\ui\\loginPage.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "f2fe9bfc-0d9b-4889-95b9-8f75ee937173",
+          "title": "Login",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Login exitoso",
+              "fullTitle": "Login Login exitoso",
+              "timedOut": null,
+              "duration": 2128,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "//Validacion login\n_loginPage.default.typeUsername('standard_user');\n_loginPage.default.typePassword('secret_sauce');\n_loginPage.default.loginBtn();\n//Validacion de pantalla de inventario\nlet url = 'https://www.saucedemo.com/inventory.html';\ncy.url(url).should('eq', 'https://www.saucedemo.com/inventory.html');",
+              "err": {},
+              "uuid": "81b4c6d7-056a-4139-997f-99a41fba396d",
+              "parentUUID": "f2fe9bfc-0d9b-4889-95b9-8f75ee937173",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Login con campos vacios",
+              "fullTitle": "Login Login con campos vacios",
+              "timedOut": null,
+              "duration": 307,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "_loginPage.default.loginBtn();\ncy.get('h3').should('contain', 'Epic sadface: Username is required');",
+              "err": {},
+              "uuid": "9f9b609b-e961-43e9-8a57-adc6b8d610a1",
+              "parentUUID": "f2fe9bfc-0d9b-4889-95b9-8f75ee937173",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Login con campos erroneos",
+              "fullTitle": "Login Login con campos erroneos",
+              "timedOut": null,
+              "duration": 666,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "_loginPage.default.typeUsername('standard_user');\n_loginPage.default.typePassword('123');\n_loginPage.default.loginBtn();\ncy.get('h3').should('contain', 'Epic sadface: Username and password do not match any user in this service');",
+              "err": {},
+              "uuid": "fab19d32-0711-482d-9769-f1c584c9464c",
+              "parentUUID": "f2fe9bfc-0d9b-4889-95b9-8f75ee937173",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "81b4c6d7-056a-4139-997f-99a41fba396d",
+            "9f9b609b-e961-43e9-8a57-adc6b8d610a1",
+            "fab19d32-0711-482d-9769-f1c584c9464c"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 3101,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    },
+    {
+      "uuid": "695a19f5-4b64-49de-baf0-cfcd6d77f75c",
+      "title": "",
+      "fullFile": "cypress\\e2e\\hibrido\\parabankCuenta.cy.js",
+      "file": "cypress\\e2e\\hibrido\\parabankCuenta.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "0f2a6e15-05cc-4865-a442-7ca8d8413787",
+          "title": "Flujo hibrido: Crear cuenta API y validar en UI",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Crear cuenta y validar",
+              "fullTitle": "Flujo hibrido: Crear cuenta API y validar en UI Crear cuenta y validar",
+              "timedOut": null,
+              "duration": 3228,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const user = this.credentials.usuarioParabank;\n//Crear cuenta desde API\n_parabankService.default.loginAPI(user.username, user.password).then(resp => {\n  expect(resp.status).to.eq(200);\n  cy.log(JSON.stringify(resp.body));\n  Cypress.env('customerId', resp.body.id); //Guardamos el id del cleinte ingresado\n  _parabankService.default.getAccounts(Cypress.env('customerId')).then(resp => {\n    expect(resp.status).to.eq(200);\n    cy.log(JSON.stringify(resp.body));\n    Cypress.env('accounts', resp.body); //Guardamos las cuentas del cliente\n    const tipoCuenta = [0, 1]; //0 = Savings 1 = Checking\n    const Cuentas = Cypress.env('accounts'); //Cuentas guardadas del cliente\n    const fromAccountId = Cuentas[0].id; //Usamos la cuenta origen del cliente\n    _parabankService.default.createAccount(Cypress.env('customerId'), fromAccountId, tipoCuenta[1]).then(resp => {\n      expect(resp.status).to.eq(200);\n      cy.log(JSON.stringify(resp.body));\n      Cypress.env('newAccountId', resp.body); //Guardamos el id de la nueva cuenta\n    });\n  });\n});\nconst newAccount = Cypress.env('newAccountId');\n//Visitar el UI y confirmar pagina\n_AccountsPage.default.visitPage();\n_AccountsPage.default.typeUsername(user.username);\n_AccountsPage.default.typePassword(user.password);\n_AccountsPage.default.loginBtn();\n_AccountsPage.default.validarPagina();\n_AccountsPage.default.tableAccounts(newAccount);",
+              "err": {},
+              "uuid": "2b2ce52d-8422-4855-95f0-4beedff84c71",
+              "parentUUID": "0f2a6e15-05cc-4865-a442-7ca8d8413787",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "2b2ce52d-8422-4855-95f0-4beedff84c71"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 3228,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    },
+    {
+      "uuid": "4d10e5ea-87fe-4c7f-9cbd-75a1808bf781",
+      "title": "",
+      "fullFile": "cypress\\e2e\\api\\booking.cy.js",
+      "file": "cypress\\e2e\\api\\booking.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "d1db5fa0-0ea7-4c5d-aa16-f515735b2527",
+          "title": "Restful-booker E2E",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "getBooking",
+              "fullTitle": "Restful-booker E2E getBooking",
+              "timedOut": null,
+              "duration": 706,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "_bookingService.default.getBooking(Cypress.env('bookingId')).then(resp => {\n  expect(resp.status).to.eq(200);\n  expect(resp.body.firstname).to.exist;\n});",
+              "err": {},
+              "uuid": "f5f682a6-4d4b-415c-bb9a-fd8897cf36c0",
+              "parentUUID": "d1db5fa0-0ea7-4c5d-aa16-f515735b2527",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "updateBooking",
+              "fullTitle": "Restful-booker E2E updateBooking",
+              "timedOut": null,
+              "duration": 194,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.fixture('bookingUpdate').then(update => {\n  _bookingService.default.updateBooking(Cypress.env('bookingId'), update.update).then(resp => {\n    expect(resp.status).to.eq(200);\n    expect(resp.body.firstname).to.eq(update.update.firstname);\n  });\n});",
+              "err": {},
+              "uuid": "0ab18ae6-e61c-4231-aca4-013b491f1a62",
+              "parentUUID": "d1db5fa0-0ea7-4c5d-aa16-f515735b2527",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "f5f682a6-4d4b-415c-bb9a-fd8897cf36c0",
+            "0ab18ae6-e61c-4231-aca4-013b491f1a62"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 900,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.4"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/reports",
+        "overwrite": false,
+        "html": false,
+        "json": true
+      },
+      "version": "6.3.0"
+    }
+  }
+}
