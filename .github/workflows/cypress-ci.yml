@@ -9,16 +9,16 @@ on:
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
-    timeout-minutes: 10  # evita que se quede corriendo por horas
+    timeout-minutes: 10
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
+      - name: Set up Node.js 20
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
 
       - name: Install dependencies
         run: npm ci
