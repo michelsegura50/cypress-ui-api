@@ -9,6 +9,7 @@ on:
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
+    timeout-minutes: 10  # evita que se quede corriendo por horas
 
     steps:
       - name: Checkout repository
@@ -22,10 +23,10 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run Cypress tests
+      - name: Run Cypress tests (headless)
         run: |
           npm run clean-reports
-          npm run test
+          npx cypress run --browser chrome --headless --config defaultCommandTimeout=10000,pageLoadTimeout=20000
           npm run merge-reports
           npm run generate-report
 
