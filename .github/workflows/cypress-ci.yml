@@ -31,7 +31,7 @@ jobs:
 
       # Sube el reporte HTML como artifact descargable
       - name: Upload consolidated Mochawesome report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: mochawesome-report
           path: cypress/reports/mochawesome/output.html
