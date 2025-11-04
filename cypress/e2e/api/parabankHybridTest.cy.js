@@ -57,8 +57,8 @@ describe('Pruebas hibridas de parabank', function(){
 
     it('Tranferir fondos', function(){
         const Cuentas = Cypress.env('accounts') //Cuentas guardadas del cliente
-        const fromAccount = Cuentas[1].id //cuenta origen
-        const toAccount = Cuentas[3].id //cuenta detino
+        const fromAccount = Cuentas[0].id //cuenta origen
+        const toAccount = Cuentas[1].id //cuenta detino
         const amount = 730 //Monto
 
         ParabankService.transferFunds(fromAccount,toAccount,amount).then((resp)=>{
